@@ -1,0 +1,16 @@
+Metadata-Version: 1.0
+Name: adkit
+Version: 0.0.1
+Summary: adkit is an test tool for adexchange.
+Home-page: http://git.adleida.com/paxp/
+Author: adleida
+Author-email: noreply@adleida.com
+License: UNKNOWN
+Description: 
+        adkit
+        -----
+        
+        adkit is an test tool for adexchange.
+        
+        
+Platform: any

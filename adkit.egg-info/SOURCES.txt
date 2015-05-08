@@ -1,0 +1,11 @@
+MANIFEST.in
+setup.py
+adkit/__init__.py
+adkit/kit.py
+adkit.egg-info/PKG-INFO
+adkit.egg-info/SOURCES.txt
+adkit.egg-info/dependency_links.txt
+adkit.egg-info/entry_points.txt
+adkit.egg-info/not-zip-safe
+adkit.egg-info/requires.txt
+adkit.egg-info/top_level.txt
