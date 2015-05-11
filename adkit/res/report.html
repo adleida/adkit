@@ -1,0 +1,11 @@
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        {% for x in jj %}
+            <p>result = {{ x.final_result }}</p>
+            <a herf="{{ x.log_url }}">{{ x.case }}</a>
+        {% endfor %}
+    </body>
+</html>
