@@ -28,7 +28,7 @@ with open('adkit/__init__.py', 'rb') as f:
             author_email='noreply@adleida.com',
             description='adkit is an test tool for adexchange.',
             long_description=__doc__,
-            packages=['adkit', 'adkit.ext'],
+            packages=['adkit'],
             package_data={'adkit': data},
             include_package_data=True,
             zip_safe=False,

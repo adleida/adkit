@@ -11,7 +11,7 @@ build:
 	python setup.py sdist
 
 upload:
-	scp ./dist/tkit-0.0.*.tar.gz python@192.168.1.114:Public/tkit
+	scp ./dist/adkit-0.0.1.tar.gz python@192.168.1.114:/tmp
 
 up_paxp:
 	scp python@192.168.1.114:paxp2-0.0.5.tar.gz .

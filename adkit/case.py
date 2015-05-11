@@ -7,6 +7,7 @@
 #########################################################################
 
 from . manager import TestManager
+import argparse
 import os
 import time
 import os.path
@@ -14,7 +15,7 @@ from . utils import load_conf, update_request, load_file, compare_dictionaries
 import json
 import logging
 from . utils import load_file
-jj = []
+jj = list() 
 
 
 def init():
@@ -55,3 +56,15 @@ def scandir(startdir, target='config.yaml'):
             scandir(obj, target)
             os.chdir(os.pardir) #!!!
 
+
+def get_arg():
+    parser = argparse.ArgumentParser(description='ad-client')
+    parser.add_argument('-f', '--folder',dest='folder', type=str,
+                        required=True,
+                        help='The case folder')
+    parser.add_argument('-n', '--count',dest='count', type=int,
+                        default=100,
+                        help='an integer for the accumulator')
+    args = parser.parse_args()
+    return args
+    pass
