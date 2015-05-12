@@ -1,2 +1,2 @@
 adkit/*.pyc
-adkit/*/*.pyc
+adkit/__pycache__/
