@@ -18,11 +18,11 @@ from . utils import load_file
 jj = list() 
 
 
-def init():
-    cfg = load_conf('config.yaml')
-    cfg = update_request(cfg)
-    tm = TestManager(cfg)
-    return tm, cfg
+# def init():
+#     cfg = load_conf('config.yaml')
+#     cfg = update_request(cfg)
+#     tm = TestManager(cfg)
+#     return tm, cfg
 
 
 def one(fuck=None):
@@ -39,17 +39,17 @@ def one(fuck=None):
         fuck['final_result'] = tm.final_result(bid_url, req_tmp, result_tmp)
         fuck['log_url'] = log_url
     else:
-        logging.error('setup error')
-        exit(-1)
+        raise Exception('setup error')
     return fuck
 
-def scandir(startdir, target='config.yaml'):
+def scandir(startdir, target='config.yaml', count=1):
     os.chdir(startdir)
     for obj in os.listdir(os.curdir) :
         if obj == target :
             try:
-                kit = one()
-                jj.append(kit)
+                for _ in range(count):
+                    kit = one()
+                    jj.append(kit)
             except Exception as ex:
                 print(ex)
         if os.path.isdir(obj) :
@@ -63,8 +63,7 @@ def get_arg():
                         required=True,
                         help='The case folder')
     parser.add_argument('-n', '--count',dest='count', type=int,
-                        default=100,
-                        help='an integer for the accumulator')
+                        default=1,
+                        help='count')
     args = parser.parse_args()
     return args
-    pass

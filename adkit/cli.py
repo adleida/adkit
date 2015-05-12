@@ -32,7 +32,3 @@ class Client(object):
             self.res = requests.post(self.url, data=data, **kwargs)
         except Exception as ex:
             pass
-
-    def validate(self):
-        if self.res and self.res.json:
-            pass
