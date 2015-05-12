@@ -3,34 +3,37 @@
 import os
 import argparse
 from . report import gen_report
-from . case import get_arg
+from . case import get_arg, test_case
 from . utils import load_resource, load_conf, update_request, load_file
 from . manager import TestManager
 import webbrowser
 
 
 def main():
-    # args = get_arg()
-    # # a = load_resource('adkit.json')
-    # if os.path.exists(args.folder):
-    #     if args.count:
-    #         scandir(args.folder, count=args.count)
-    #     else:
-    #         scandir(args.folder)
+    args = get_arg()
+    cloud = load_resource('adkit.yaml')
+    ex = cloud.get('ex')
+    mock = cloud.get('mock')
 
-    #     data = load_resource('report.html', as_object=False)
-    #     gen_report(data)
-    # else:
-    #     print("folder not found")
-    #     exit(-2)
-    cfg = load_conf('config.yaml')
-    cfg = update_request(cfg)
-    request_tmp = load_file('request.json')
-    result_tmp = load_file('result.json')
-    tm = TestManager()
-    final = tm.final_result(request_tmp, result_tmp)
-    print(final)
-    print(tm.mock_conf, tm.ex_bid, tm.ex_reload)
+    tm = TestManager(ex=ex, mock=mock)
+    tm.gen_case_dir(args.folder)
+    
+    def for_over():
+        while True:
+            for x in tm.case:
+                for y in test_case(x, tm, args.count):
+                    print(y)
+    def test_n():
+        for x in tm.case:
+            for y in test_case(x, tm, args.count):
+                yield(y)
+
+    if args.forover:
+        for_over()
+    else:
+        for re in test_n():
+            print(re)
+        
 
 
 if __name__ == '__main__':

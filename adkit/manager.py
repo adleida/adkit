@@ -5,6 +5,7 @@
 # mail: jacketfan826@gmail.com
 # Created Time: 2015年05月10日 星期日 11时16分05秒
 #########################################################################
+import os
 import logging
 import os.path as _path
 from . cli import Client
@@ -17,7 +18,7 @@ class TestManager(object):
         self.cli = Client()
         self.ex = ex or 'http://127.0.0.1:5000'
         self.mock = mock or 'http://127.0.0.1:6001'
-        self.rt = {}
+        self.case = []
         self.make_url()
 
     def set_url(self, url=None):
@@ -56,22 +57,22 @@ class TestManager(object):
 
     def final_result(self, data, result):
         bid_result = self.send_bid(data)
-        print("case response = %s" % (bid_result))
         try:
             compare_dictionaries(bid_result, result)
             return True
         except Exception as ex:
             return False
 
-    def re_test(self, folder=None, count=1):
-        target_file = 'config.yaml'
+    def gen_case_dir(self, folder):
+        target = 'config.yaml'
         os.chdir(folder)
-        for obj in os.listdir(os.curdir):
-            if obj == target_file:
-                su = self.setup()
-                if su[1]:
-                    self.rt['uid'] = su[0]
+        for obj in os.listdir(os.curdir) :
+            if obj == target :
+                self.case.append(os.getcwd())
             if os.path.isdir(obj) :
-                scandir(obj, target)
+                self.gen_case_dir(obj)
                 os.chdir(os.pardir) #!!!
+
+    def clean(self):
+        self.case = []
 

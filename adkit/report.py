@@ -2,7 +2,6 @@
 # -*- coding:utf-8 -*-
 
 import jinja2
-from . case import jj
 
 
 def gen_report(data):

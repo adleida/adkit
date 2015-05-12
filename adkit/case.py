@@ -15,55 +15,37 @@ from . utils import load_conf, update_request, load_file, compare_dictionaries
 import json
 import logging
 from . utils import load_file
-jj = list() 
+import adkit
 
-
-# def init():
-#     cfg = load_conf('config.yaml')
-#     cfg = update_request(cfg)
-#     tm = TestManager(cfg)
-#     return tm, cfg
-
-
-def one(fuck=None):
-    if fuck is None:
-        fuck = {}
-    tm, cfg = init()
-    re, ok = tm.setup()
-    if ok:
-        req_tmp = load_file('request.json')
-        result_tmp = load_file('result.json')
-        bid_url = 'http://{}/clk'.format(cfg.get('bind', '127.0.0.1:5000'))
-        log_url = tm.log_url + str(re)
-        fuck['case'] = os.getcwd()
-        fuck['final_result'] = tm.final_result(bid_url, req_tmp, result_tmp)
-        fuck['log_url'] = log_url
-    else:
-        raise Exception('setup error')
-    return fuck
-
-def scandir(startdir, target='config.yaml', count=1):
-    os.chdir(startdir)
-    for obj in os.listdir(os.curdir) :
-        if obj == target :
-            try:
-                for _ in range(count):
-                    kit = one()
-                    jj.append(kit)
-            except Exception as ex:
-                print(ex)
-        if os.path.isdir(obj) :
-            scandir(obj, target)
-            os.chdir(os.pardir) #!!!
 
 
 def get_arg():
-    parser = argparse.ArgumentParser(description='ad-client')
-    parser.add_argument('-f', '--folder',dest='folder', type=str,
-                        required=True,
-                        help='The case folder')
-    parser.add_argument('-n', '--count',dest='count', type=int,
-                        default=1,
-                        help='count')
+    parser = argparse.ArgumentParser(description='adlei test kit')
+    parser.add_argument('-f', '--folder',dest='folder', type=str, required=True, help='The case folder')
+    parser.add_argument('-n', '--count',dest='count', type=int, default=1, help='count')
+    parser.add_argument('-r', '--forover',dest='forover', type=bool, default=False, help='for_over test')
+    parser.add_argument('-v', action='version',version=adkit.__version__)
     args = parser.parse_args()
     return args
+
+
+def test_case(case, tm, count=1):
+    os.chdir(case)
+    for cut in range(count):
+        result = {}
+        # load_test data
+        try:
+            cfg = load_conf('config.yaml')
+            cfg = update_request(cfg)
+            request_tmp = load_file('request.json')
+            result_tmp = load_file('result.json')
+            su = tm.setup(cfg)
+            if su[1]:
+                final = tm.final_result(request_tmp, result_tmp)
+                result['final_result'] = final
+                result['case'] = case
+                result['uuid'] = su[0]
+                yield result
+        except Exception as ex:
+            print(case, ex)
+            break
