@@ -25,10 +25,10 @@ class Client(object):
         try:
             self.res = requests.post(self.url, json=json, **kwargs)
         except Exception as ex:
-            pass
+            raise ex
 
     def post_normal_data(self, data=None, **kwargs):
         try:
             self.res = requests.post(self.url, data=data, **kwargs)
         except Exception as ex:
-            pass
+            raise ex
