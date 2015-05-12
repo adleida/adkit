@@ -3,8 +3,8 @@
 import os
 import argparse
 from . report import gen_report
-from . case import init, scandir, get_arg
-from . utils import load_resource
+from . case import get_arg
+from . utils import load_resource, load_conf, update_request, load_file
 from . manager import TestManager
 import webbrowser
 
@@ -23,7 +23,13 @@ def main():
     # else:
     #     print("folder not found")
     #     exit(-2)
+    cfg = load_conf('config.yaml')
+    cfg = update_request(cfg)
+    request_tmp = load_file('request.json')
+    result_tmp = load_file('result.json')
     tm = TestManager()
+    final = tm.final_result(request_tmp, result_tmp)
+    print(final)
     print(tm.mock_conf, tm.ex_bid, tm.ex_reload)
 
 

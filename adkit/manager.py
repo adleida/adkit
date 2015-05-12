@@ -15,7 +15,6 @@ class TestManager(object):
 
     def __init__(self, ex=None, mock=None):
         self.cli = Client()
-        self.conf = conf or {}
         self.ex = ex or 'http://127.0.0.1:5000'
         self.mock = mock or 'http://127.0.0.1:6001'
         self.rt = {}
@@ -39,15 +38,15 @@ class TestManager(object):
         self.cli.post_json_data(json=obj)
         return self.cli.res.json()
 
-    def setup(self):
-        cf = self.send_conf()
+    def setup(self, data):
+        cf = self.send_conf(data)
         rc = self.reload_conf()
         if cf.get('conf', False) and rc.get('reload', False):
             return cf.get('uuid', ''), True 
         return None, False
 
     def send_bid(self, data):
-        self.set_url(url=sefl.ex_bid)
+        self.set_url(url=self.ex_bid)
         try:
             self.cli.post_json_data(json=data)
             return self.cli.res.json()
