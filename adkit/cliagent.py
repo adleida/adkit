@@ -63,13 +63,13 @@ class CliAgent(object):
             logging.info('final_result: False')
             logging.error('final_result: %s' % ex)
             return False
-    
+
     def gen_case_dir(self, folder):
         target = 'config.yaml'
         os.chdir(folder)
-        for obj in os.listdir(os.curdir) :
-            if obj == target :
+        for obj in os.listdir(os.curdir):
+            if obj == target:
                 self.case.append(os.getcwd())
-            if os.path.isdir(obj) :
+            if os.path.isdir(obj):
                 self.gen_case_dir(obj)
-                os.chdir(os.pardir) #!!!
+                os.chdir(os.pardir)
