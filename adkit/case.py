@@ -19,6 +19,7 @@ import adkit
 
 
 
+
 def get_arg():
     parser = argparse.ArgumentParser(description='adlei test kit')
     parser.add_argument('-f', '--folder',dest='folder', type=str, required=True, help='The case folder')
@@ -27,7 +28,6 @@ def get_arg():
     parser.add_argument('-v', action='version',version=adkit.__version__)
     args = parser.parse_args()
     return args
-
 
 def test_case(case, tm, count=1):
     os.chdir(case)

@@ -10,10 +10,5 @@ test:
 build:
 	python setup.py sdist
 
-upload:
-	scp ./dist/adkit-0.0.3.tar.gz python@192.168.1.114:/tmp
-
-up_paxp:
-	scp python@192.168.1.114:paxp2-0.0.5.tar.gz .
-	pip install paxp2-0.0.5.tar.gz
-	rm paxp2-0.0.5.tar.gz
+upload: build
+	scp ./dist/adkit-0.0.4.tar.gz python@192.168.1.114:/tmp

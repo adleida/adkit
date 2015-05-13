@@ -41,8 +41,9 @@ class CliAgent(object):
         sc = self.send_conf(json=json).json()
         rc = self.reload_conf().json()
         if sc['conf'] and rc['reload']:
-            logging.info('setup,success ')
+            logging.info('setup,success!!!')
             return sc['uuid']
+        logging.info('setup,fail!!!')
         return None
 
     def send_bid(self, fname='request.json', timeout=1):
@@ -50,8 +51,8 @@ class CliAgent(object):
         return requests.post(self.ex_bid, json=req_data, timeout=timeout,
                              headers=self.header)
 
-    def final_result(self, result='result.json'):
-        bid_result = self.send_bid()
+    def final_result(self, result='result.json', timeout=1):
+        bid_result = self.send_bid(timeout=timeout)
         logging.debug('bid_result: %s' % bid_result.json())
         result = load_conf(result)
         try:
