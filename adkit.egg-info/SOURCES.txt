@@ -3,6 +3,7 @@ setup.py
 adkit/__init__.py
 adkit/case.py
 adkit/cli.py
+adkit/cliagent.py
 adkit/kit.py
 adkit/manager.py
 adkit/report.py

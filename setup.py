@@ -41,7 +41,6 @@ with open('adkit/__init__.py', 'rb') as f:
                 'jsonschema==2.4.0',
                 'PyYAML==3.11',
                 'requests==2.6.0',
-                'sh==1.11',
                 'termcolor==1.1.0'
             ],
         )

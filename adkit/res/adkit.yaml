@@ -1,2 +1,26 @@
 ex: http://127.0.0.1:5000
 mock: http://127.0.0.1:6001
+
+logging:
+  formatters:
+    default:
+      format: '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+      datefmt: '%FT%T'
+  handlers:
+    console:
+      class: logging.StreamHandler
+      formatter: default
+      level: DEBUG
+    file:
+      class: logging.handlers.RotatingFileHandler
+      formatter: default
+      level: DEBUG
+      filename: adkit-2.log
+      maxBytes: 1000000
+      backupCount: 3
+  loggers:
+    requests:
+      level: ERROR
+  root:
+      handlers: [console, file]
+      level: DEBUG

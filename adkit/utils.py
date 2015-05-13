@@ -100,10 +100,10 @@ def update_request(cfg):
     for dp in cfg.get('dsp').get('s'):
         nf = dp.get('notice_file')
         rf = dp.get('res_file')
-        if isinstance(nf, str):
-            dp['notice_file'] = json.loads(open(nf).read())
-        if isinstance(rf, str):
-            dp['res_file'] = json.loads(open(rf).read())
+        if isinstance(nf, str) and os.path.exists(nf):
+            dp['notice_file'] = load_conf(nf) 
+        if isinstance(rf, str) and os.path.exists(rf):
+            dp['res_file'] = load_conf(rf) 
 
     return cfg
 
