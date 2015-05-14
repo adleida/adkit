@@ -11,4 +11,4 @@ build:
 	python setup.py sdist
 
 upload: build
-	scp ./dist/adkit-0.0.5.tar.gz python@192.168.1.114:
+	scp ./dist/adkit-0.0.6.tar.gz 114:

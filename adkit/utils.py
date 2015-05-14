@@ -15,8 +15,6 @@ import os.path
 import pkgutil
 import requests
 import yaml
-import types
-import time
 
 
 @functools.lru_cache()
@@ -33,7 +31,7 @@ def load_resource(name, as_object=True):
 
     path = 'res/{}'.format(name)
     blob = pkgutil.get_data(__package__, path)
-    if blob == None:
+    if blob is None:
         raise Exception('no such resource: {}'.format(name))
     data = blob.decode()
     if as_object:
@@ -101,9 +99,9 @@ def update_request(cfg):
         nf = dp.get('notice_file')
         rf = dp.get('res_file')
         if isinstance(nf, str) and os.path.exists(nf):
-            dp['notice_file'] = load_conf(nf) 
+            dp['notice_file'] = load_conf(nf)
         if isinstance(rf, str) and os.path.exists(rf):
-            dp['res_file'] = load_conf(rf) 
+            dp['res_file'] = load_conf(rf)
 
     return cfg
 
@@ -122,17 +120,29 @@ class MyError(Exception):
         return "The error message is %s" % self.message
 
 
-def compare_dictionaries(dict1, dict2):
+def compare_dictionaries(x, y):
 
-    '''cmp dict'''
-    dicts_are_equal = True
-    for key in dict2.keys():
-        if type(dict2[key]) is dict:
-            dicts_are_equal = dicts_are_equal and compare_dictionaries(dict1[key], dict2[key])
+    '''x contains y'''
+
+    if type(x) != type(y):
+        return False
+
+    if isinstance(y, list):
+        if len(y) > len(x):
+            return False
+        for i in zip(x, y):
+            if not compare_dictionaries(*i):
+                return False
         else:
-            dicts_are_equal = dicts_are_equal and (dict1[key] == dict2[key])
-            if not dicts_are_equal:
-                raise MyError("The key %s of dict1 not equeal dict2" % key)
+            return True
 
-    return dicts_are_equal
+    if isinstance(y, dict):
+        for y_k, y_v in y.items():
+            if y_k not in x:
+                return False
+            if not compare_dictionaries(x[y_k], y_v):
+                return False
+        else:
+            return True
 
+    return x == y

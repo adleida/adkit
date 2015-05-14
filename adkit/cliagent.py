@@ -56,7 +56,7 @@ class CliAgent(object):
         logging.debug('bid_result: %s' % bid_result.json())
         result = load_conf(result)
         try:
-            compare_dictionaries(bid_result.json(), result)
+            assert compare_dictionaries(bid_result.json(), result)
             logging.info('final_result: True')
             return True
         except Exception as ex:
