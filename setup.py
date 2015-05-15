@@ -40,7 +40,7 @@ with open('adkit/__init__.py', 'rb') as f:
             install_requires=[
                 'jsonschema==2.4.0',
                 'PyYAML==3.11',
-                'requests==2.6.0',
+                'requests',
                 'termcolor==1.1.0'
             ],
         )

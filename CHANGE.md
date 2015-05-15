@@ -12,3 +12,7 @@
 
 # 0.0.6
 - 修改dict_diff 函数， 进行包含比对
+
+# 0.0.7
+- 添加每个case 每次的运行时间
+- 修改requests requirements version
