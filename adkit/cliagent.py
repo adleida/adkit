@@ -47,8 +47,9 @@ class CliAgent(object):
         return None
 
     def send_bid(self, fname='request.json', timeout=1):
-        req_data = load_conf(fname)
-        return requests.post(self.ex_bid, json=req_data, timeout=timeout,
+        # req_data = load_conf(fname)
+        req_data = open(fname).read().encode()
+        return requests.post(self.ex_bid, data=req_data, timeout=timeout,
                              headers=self.header)
 
     def final_result(self, result='result.json', timeout=1):
