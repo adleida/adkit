@@ -6,10 +6,11 @@
 # Created Time: 2015年05月13日 星期三 00时26分59秒
 #########################################################################
 import os
+import time
 import os.path as _path
 import requests
 import logging
-from .utils import load_conf, compare_dictionaries
+from .utils import load_conf, compare_dictionaries, update_request
 
 logger = logging.getLogger(__name__)
 
@@ -48,9 +49,9 @@ class CliAgent(object):
 
     def send_bid(self, fname='request.json', timeout=1):
         # req_data = load_conf(fname)
-        req_data = open(fname).read().encode()
-        return requests.post(self.ex_bid, data=req_data, timeout=timeout,
-                             headers=self.header)
+        with open(fname) as f:
+            req_data = f.read().encode()
+            return requests.post(self.ex_bid, data=req_data, timeout=timeout, headers=self.header)
 
     def final_result(self, result='result.json', timeout=1):
         bid_result = self.send_bid(timeout=timeout)
@@ -62,7 +63,6 @@ class CliAgent(object):
             return True
         except Exception as ex:
             logging.info('final_result: False')
-            logging.error('final_result: %s' % ex)
             return False
 
     def gen_case_dir(self, folder):
@@ -74,3 +74,30 @@ class CliAgent(object):
             if os.path.isdir(obj):
                 self.gen_case_dir(obj)
                 os.chdir(os.pardir)
+
+    def run_forover(self, timeout=1):
+        while True:
+            for ce in self.case:
+                logging.info('case_name = %s' % ce)
+                try:
+                    os.chdir(ce)
+                    self.setup(update_request(load_conf('config.yaml')))
+                    self.final_result(timeout=timeout)
+                except Exception as ex:
+                    logging.error("Error: %s" % ex)
+                    continue
+
+    def run_case(self, count=1, timeout=1):
+        for ce in self.case:
+            os.chdir(ce)
+            self.setup(update_request(load_conf('config.yaml')))
+            start = time.time()
+            for ct in range(count):
+                try:
+                    logging.info("Count: %s" % (ct + 1))
+                    self.final_result(timeout=timeout)
+                except Exception as ex:
+                    logging.error('Error = %s' % ex)
+                continue
+            end = time.time()
+            logging.info("Average take time: %s's\n" % ((end - start)/count))

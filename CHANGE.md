@@ -16,3 +16,7 @@
 # 0.0.7
 - 添加每个case 每次的运行时间
 - 修改requests requirements version
+- 可以发送格式错误的文件
+
+# 0.0.8
+- 重构代码，添加上输出时间

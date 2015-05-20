@@ -15,6 +15,7 @@ import os.path
 import pkgutil
 import requests
 import yaml
+import logging
 
 
 @functools.lru_cache()
@@ -99,10 +100,19 @@ def update_request(cfg):
         nf = dp.get('notice_file')
         rf = dp.get('res_file')
         if isinstance(nf, str) and os.path.exists(nf):
-            dp['notice_file'] = load_conf(nf)
+            try:
+                dp['notice_file'] = load_conf(nf)
+            except Exception as ex:
+                logging.warn('notice_file format error')
+                with open(nf) as f:
+                    dp['notice_file'] = f.read()
         if isinstance(rf, str) and os.path.exists(rf):
-            dp['res_file'] = load_conf(rf)
-
+            try:
+                dp['res_file'] = load_conf(rf)
+            except Exception as ex:
+                logging.warn('res_file format error')
+                with open(rf) as f:
+                    dp['res_file'] = f.read()
     return cfg
 
 
