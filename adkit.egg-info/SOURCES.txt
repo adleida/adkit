@@ -5,8 +5,6 @@ adkit/case.py
 adkit/cli.py
 adkit/cliagent.py
 adkit/kit.py
-adkit/manager.py
-adkit/report.py
 adkit/utils.py
 adkit.egg-info/PKG-INFO
 adkit.egg-info/SOURCES.txt

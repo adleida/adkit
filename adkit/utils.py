@@ -102,14 +102,14 @@ def update_request(cfg):
         if isinstance(nf, str) and os.path.exists(nf):
             try:
                 dp['notice_file'] = load_conf(nf)
-            except Exception as ex:
+            except Exception:
                 logging.warn('notice_file format error')
                 with open(nf) as f:
                     dp['notice_file'] = f.read()
         if isinstance(rf, str) and os.path.exists(rf):
             try:
                 dp['res_file'] = load_conf(rf)
-            except Exception as ex:
+            except Exception:
                 logging.warn('res_file format error')
                 with open(rf) as f:
                     dp['res_file'] = f.read()
@@ -119,15 +119,6 @@ def update_request(cfg):
 def load_file(fname):
     with open(fname) as f:
         return json.loads(f.read())
-
-
-class MyError(Exception):
-
-    def __init__(self, message):
-        self.message = message
-
-    def __str__(self):
-        return "The error message is %s" % self.message
 
 
 def compare_dictionaries(x, y):
