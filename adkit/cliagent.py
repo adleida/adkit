@@ -61,7 +61,7 @@ class CliAgent(object):
             assert compare_dictionaries(bid_result.json(), result)
             logging.info('final_result: True')
             return True
-        except Exception as ex:
+        except Exception:
             logging.info('final_result: False')
             return False
 
@@ -89,6 +89,7 @@ class CliAgent(object):
 
     def run_case(self, count=1, timeout=1):
         for ce in self.case:
+            logging.info('case_name = %s' % ce)
             os.chdir(ce)
             self.setup(update_request(load_conf('config.yaml')))
             start = time.time()
@@ -100,4 +101,4 @@ class CliAgent(object):
                     logging.error('Error = %s' % ex)
                 continue
             end = time.time()
-            logging.info("Average take time: %s's\n" % ((end - start)/count))
+            logging.info("Average take time: %s's\n" % ((end - start) / count))
