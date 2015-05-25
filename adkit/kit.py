@@ -8,6 +8,7 @@ import time
 import logging
 import logging.config
 import adkit
+from tabulate import tabulate
 
 logger = logging.getLogger(__name__)
 
@@ -76,6 +77,7 @@ def main():
     logging.info("escaped_time %s's " % (end - start))
     for x, y, z in result:
         logging.info("{},{},{}".format(x, y, z))
+    print(tabulate(result, headers=['case', 'count', 'avg_time']))
 
 
 if __name__ == '__main__':

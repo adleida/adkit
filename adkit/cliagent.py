@@ -117,5 +117,4 @@ class CliAgent(object):
                     logging.error('Error = %s' % ex)
                 continue
             end = time.time()
-            logging.info("Average take time: %s's\n" % ((end - start) / count))
-            yield (ce, count, (end - start))
+            yield (ce, count, (end - start) / count)
