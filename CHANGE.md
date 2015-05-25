@@ -23,3 +23,4 @@
 
 # 0.0.9
 - logging出每个case的测试次数和测试的平均时间
+- 0.0.9.1 print table
