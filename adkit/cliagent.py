@@ -51,7 +51,8 @@ class CliAgent(object):
         # req_data = load_conf(fname)
         with open(fname) as f:
             req_data = f.read().encode()
-            return requests.post(self.ex_bid, data=req_data, timeout=timeout, headers=self.header)
+            return requests.post(self.ex_bid, data=req_data, timeout=timeout,
+                                 headers=self.header)
 
     def final_result(self, result='result.json', timeout=1):
         bid_result = self.send_bid(timeout=timeout)
@@ -61,8 +62,9 @@ class CliAgent(object):
             assert compare_dictionaries(bid_result.json(), result)
             logging.info('final_result: True')
             return True
-        except Exception:
-            logging.info('final_result: False')
+        except Exception as ex:
+            print(ex)
+            logging.error('final_result: False')
             return False
 
     def gen_case_dir(self, folder):
@@ -75,9 +77,21 @@ class CliAgent(object):
                 self.gen_case_dir(obj)
                 os.chdir(os.pardir)
 
+    def run_normal(self, timeout):
+        for ce in self.case:
+            start = time.time()
+            try:
+                result = self.send_bid(timeout).json()
+                logging.info("Send normal bid is %s" % result)
+            except Exception as ex:
+                logging.error("The Error is: %s" % ex)
+            end = time.time()
+            logging.info('case_name = %s, escape_time = %s' % (ce, (end - start)))
+
     def run_forover(self, timeout=1):
         while True:
             for ce in self.case:
+                start = time.time()
                 logging.info('case_name = %s' % ce)
                 try:
                     os.chdir(ce)
@@ -85,7 +99,9 @@ class CliAgent(object):
                     self.final_result(timeout=timeout)
                 except Exception as ex:
                     logging.error("Error: %s" % ex)
-                    continue
+                end = time.time()
+                logging.info("case_escaped_time:%s" % (end - start))
+                continue
 
     def run_case(self, count=1, timeout=1):
         for ce in self.case:
@@ -102,3 +118,4 @@ class CliAgent(object):
                 continue
             end = time.time()
             logging.info("Average take time: %s's\n" % ((end - start) / count))
+            yield (ce, count, (end - start))
