@@ -77,12 +77,12 @@ class CliAgent(object):
                 self.gen_case_dir(obj)
                 os.chdir(os.pardir)
 
-    def run_normal(self, timeout):
+    def run_normal(self, timeout=1):
         for ce in self.case:
             start = time.time()
             try:
-                result = self.send_bid(timeout).json()
-                logging.info("Send normal bid is %s" % result)
+                result = self.send_bid(timeout=timeout).json()
+                logging.info("bid_response is: %s" % result)
             except Exception as ex:
                 logging.error("The Error is: %s" % ex)
             end = time.time()

@@ -47,18 +47,24 @@ def main():
 
     if args.normal:
         if args.forover:
-            while True:
-                try:
-                    start = time.time()
-                    ca.run_normal(args.timeout)
-                    end1 = time.time()
-                    logging.info("time %s" % (end1 - start))
-                except Exception as ex:
-                    end2 = time.time()
-                    logging.error("Error %s" % ex)
-                    logging.info("time %s" % (end2 - start))
-                    continue
-        ca.run_normal(args.timeout)
+            try:
+                start7 = time.time()
+                while True:
+                    try:
+                        start = time.time()
+                        ca.run_normal(args.timeout)
+                        end1 = time.time()
+                        logging.info("time %s" % (end1 - start))
+                    except Exception as ex:
+                        end2 = time.time()
+                        logging.error("Error %s" % ex)
+                        logging.info("time %s" % (end2 - start))
+                        continue
+            except KeyboardInterrupt:
+                end7 = time.time()
+                logging.warn("Run normal %s 's" % (end7 - start7))
+                return
+        ca.run_normal(timeout=args.timeout)
         return
 
     if args.forover:
