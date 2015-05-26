@@ -25,6 +25,8 @@ def get_arg():
     parser.add_argument('-t', '--timeout', dest='timeout', type=float,
                         default=1, help='timeout')
 
+    parser.add_argument('-c', '--config', dest='config', required=True, type=str, help='config file')
+
     parser.add_argument('--forover', action='store_true',
                         help='run the case forover')
 
@@ -37,7 +39,7 @@ def get_arg():
 
 def main():
     args = get_arg()
-    cloud = load_resource('adkit.yaml')
+    cloud = load_conf(args.config)
     ca = CliAgent(ex=cloud.get('ex'), mock=cloud.get('mock'))
     ca.gen_case_dir(args.folder)
 
