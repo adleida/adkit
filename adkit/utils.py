@@ -16,6 +16,7 @@ import pkgutil
 import requests
 import yaml
 import logging
+import time
 
 
 @functools.lru_cache()
@@ -147,3 +148,14 @@ def compare_dictionaries(x, y):
             return True
 
     return x == y
+
+
+def timeit(func):
+
+    @functools.wraps(func)
+    def wrapper(*args):
+        start = time.clock()
+        func(*args)
+        end = time.clock()
+        logging.info("Escaped_time is: %s ms" % ((end - start) * 1000))
+    return wrapper

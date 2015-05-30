@@ -66,7 +66,12 @@ def main():
                 end7 = time.time()
                 logging.warn("Run normal %s 's" % (end7 - start7))
                 return
-        ca.run_normal(timeout=args.timeout)
+        if args.count:
+            start5 = time.time()
+            for x in range(args.count):
+                ca.run_normal(timeout=args.timeout)
+            end5 = time.time()
+            logging.info("Normal avg time: %s" % ((end5 - start5) / args.count))
         return
 
     if args.forover:
