@@ -11,6 +11,8 @@ import os.path as _path
 import requests
 import logging
 from .utils import load_conf, compare_dictionaries, update_request
+from .exception import SetupException, ReloadException, ConfException,\
+    SendbidExcecption
 
 logger = logging.getLogger(__name__)
 
@@ -34,46 +36,53 @@ class CliAgent(object):
 
     def send_conf(self, json):
         try:
-            return requests.post(self.mock_conf, json=json)
+            tt = requests.post(self.mock_conf, json=json)
+            logging.info("send_conf:(pass, None)")
+            return tt
         except Exception as ex:
-            raise Exception("send_conf error, reason: %s" % ex)
+            logging.error("send_conf:(fail, %s)" % ex)
+            raise ConfException("send_conf error, reason: %s" % ex)
 
     def reload_conf(self):
         try:
-            return requests.post(self.ex_reload, json={})
+            tt = requests.post(self.ex_reload)
+            logging.info("reload_conf:(pass, None)")
+            return tt
         except Exception as ex:
-            raise Exception("reload error, reason: %s" % ex)
+            logging.error("reload_conf:(fail, %s)" % ex)
+            raise ReloadException("Reload error, reason: %s" % ex)
 
     def setup(self, json):
         try:
             sc = self.send_conf(json=json).json()
             rc = self.reload_conf().json()
             if sc['conf'] and rc['reload']:
-                logging.info('setup,success!!!')
+                logging.info("setup:(pass,None)")
                 return sc['uuid']
-            logging.info('setup,fail!!!')
         except Exception as ex:
-            raise ex
+            logging.error("setup:(fail, %s)" % ex)
+            raise SetupException("Setup Error, reason: %s" % ex)
 
     def send_bid(self, fname='request.json', timeout=1):
         try:
             with open(fname) as f:
                 req_data = f.read().encode()
-                return requests.post(self.ex_bid, data=req_data, timeout=timeout, headers=self.header)
+                tt = requests.post(self.ex_bid, data=req_data, timeout=timeout, headers=self.header)
+                logging.info("send_bid:(pass, %s)" % tt.json())
+                return tt
         except Exception as ex:
-            raise Exception("Send_bid error, reason: %s" % ex)
+            logging.error("send_bid:(fail, %s)" % ex)
+            raise SendbidExcecption("Send_bid error, reason: %s" % ex)
 
     def final_result(self, result='result.json', timeout=1):
         try:
             bid_result = self.send_bid(timeout=timeout)
-            logging.debug('bid_result: %s' % bid_result.json())
             result = load_conf(result)
             assert compare_dictionaries(bid_result.json(), result)
-            logging.info('final_result: True')
-            return True
-        except Exception as ex:
-            logging.error('final_result: False')
-            return False
+        except SendbidExcecption as ex:
+            raise SendbidExcecption("Send_bid error, reason: %s" % ex)
+        except AssertionError:
+            raise AssertionError
 
     def gen_case_dir(self, folder):
         target = 'config.yaml'
@@ -105,8 +114,14 @@ class CliAgent(object):
                     os.chdir(ce)
                     self.setup(update_request(load_conf('config.yaml')))
                     self.final_result(timeout=timeout)
-                except Exception as ex:
-                    logging.error("Error: %s" % ex)
+                    logging.info("final_result: (pass, None)")
+                except SetupException as setex:
+                    logging.error("send_bid: (fail, %s)" % setex)
+                    logging.error("final_result: (fail, %s)" % setex)
+                except SendbidExcecption as sendex:
+                    logging.error("final_result: (fail, %s)" % sendex)
+                except AssertionError:
+                    logging.error("final_result: (fail, cmp result fail)")
                 end = time.time()
                 logging.info("case_escaped_time:%s" % (end - start))
                 continue

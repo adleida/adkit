@@ -151,11 +151,10 @@ def compare_dictionaries(x, y):
 
 
 def timeit(func):
-
     @functools.wraps(func)
-    def wrapper(*args):
+    def wrapper():
         start = time.clock()
-        func(*args)
+        func()
         end = time.clock()
-        logging.info("Escaped_time is: %s ms" % ((end - start) * 1000))
+        return (end - start)
     return wrapper

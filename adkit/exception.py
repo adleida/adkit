@@ -7,9 +7,17 @@
 # ======================================================================
 
 
-class SetupException(Exception):
+class ConfException(Exception):
     pass
 
 
 class ReloadException(Exception):
+    pass
+
+
+class SetupException(Exception):
+    pass
+
+
+class SendbidExcecption(Exception):
     pass
