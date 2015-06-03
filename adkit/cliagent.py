@@ -99,9 +99,9 @@ class CliAgent(object):
             start = time.time()
             try:
                 result = self.send_bid(timeout=timeout).json()
-                logging.info("bid_response is: %s" % result)
-            except Exception as ex:
-                logging.error("The Error is: %s" % ex)
+                logging.info("bid_response:(pass, %s)" % result)
+            except SendbidExcecption as ex:
+                logging.error("bid_response:(fail, %s)" % ex)
             end = time.time()
             logging.info('case_name = %s, escape_time = %s' % (ce, (end - start)))
 
