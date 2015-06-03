@@ -33,37 +33,45 @@ class CliAgent(object):
         self.mock_conf = _path.join(self.mock, 'conf')
 
     def send_conf(self, json):
-        return requests.post(self.mock_conf, json=json)
+        try:
+            return requests.post(self.mock_conf, json=json)
+        except Exception as ex:
+            raise Exception("send_conf error, reason: %s" % ex)
 
     def reload_conf(self):
-        return requests.post(self.ex_reload, json={})
+        try:
+            return requests.post(self.ex_reload, json={})
+        except Exception as ex:
+            raise Exception("reload error, reason: %s" % ex)
 
     def setup(self, json):
-        sc = self.send_conf(json=json).json()
-        rc = self.reload_conf().json()
-        if sc['conf'] and rc['reload']:
-            logging.info('setup,success!!!')
-            return sc['uuid']
-        logging.info('setup,fail!!!')
-        return None
+        try:
+            sc = self.send_conf(json=json).json()
+            rc = self.reload_conf().json()
+            if sc['conf'] and rc['reload']:
+                logging.info('setup,success!!!')
+                return sc['uuid']
+            logging.info('setup,fail!!!')
+        except Exception as ex:
+            raise ex
 
     def send_bid(self, fname='request.json', timeout=1):
-        # req_data = load_conf(fname)
-        with open(fname) as f:
-            req_data = f.read().encode()
-            return requests.post(self.ex_bid, data=req_data, timeout=timeout,
-                                 headers=self.header)
+        try:
+            with open(fname) as f:
+                req_data = f.read().encode()
+                return requests.post(self.ex_bid, data=req_data, timeout=timeout, headers=self.header)
+        except Exception as ex:
+            raise Exception("Send_bid error, reason: %s" % ex)
 
     def final_result(self, result='result.json', timeout=1):
-        bid_result = self.send_bid(timeout=timeout)
-        logging.debug('bid_result: %s' % bid_result.json())
-        result = load_conf(result)
         try:
+            bid_result = self.send_bid(timeout=timeout)
+            logging.debug('bid_result: %s' % bid_result.json())
+            result = load_conf(result)
             assert compare_dictionaries(bid_result.json(), result)
             logging.info('final_result: True')
             return True
         except Exception as ex:
-            print(ex)
             logging.error('final_result: False')
             return False
 
@@ -88,7 +96,7 @@ class CliAgent(object):
             end = time.time()
             logging.info('case_name = %s, escape_time = %s' % (ce, (end - start)))
 
-    def run_forover(self, timeout=1):
+    def run_forever(self, timeout=1):
         while True:
             for ce in self.case:
                 start = time.time()

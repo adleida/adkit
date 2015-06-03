@@ -27,7 +27,7 @@ def get_arg():
 
     parser.add_argument('-c', '--config', dest='config', required=True, type=str, help='config file')
 
-    parser.add_argument('--forover', action='store_true',
+    parser.add_argument('--forever', action='store_true',
                         help='run the case forover')
 
     parser.add_argument('--normal', action='store_true',
@@ -74,10 +74,10 @@ def main():
             logging.info("Normal avg time: %s" % ((end5 - start5) / args.count))
         return
 
-    if args.forover:
+    if args.forever:
         try:
             start = time.time()
-            ca.run_forover(args.timeout)
+            ca.run_forever(args.timeout)
         except KeyboardInterrupt:
             end2 = time.time()
             logging.warn('<<<<<<<<Test stop>>>>>>>>')
