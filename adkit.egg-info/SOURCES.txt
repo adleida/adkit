@@ -2,8 +2,8 @@ MANIFEST.in
 setup.py
 adkit/__init__.py
 adkit/case.py
-adkit/cli.py
 adkit/cliagent.py
+adkit/exception.py
 adkit/kit.py
 adkit/utils.py
 adkit.egg-info/PKG-INFO
@@ -13,6 +13,4 @@ adkit.egg-info/entry_points.txt
 adkit.egg-info/not-zip-safe
 adkit.egg-info/requires.txt
 adkit.egg-info/top_level.txt
-adkit/res/adkit.json
 adkit/res/adkit.yaml
-adkit/res/report.html
