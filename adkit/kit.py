@@ -48,7 +48,7 @@ def main():
     logging.config.dictConfig(log)
 
     if args.normal:
-        if args.forover:
+        if args.forever:
             try:
                 start7 = time.time()
                 while True:
