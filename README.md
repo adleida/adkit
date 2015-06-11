@@ -1,8 +1,7 @@
 # adkit
 
-### 测试流程图
-![flow](http://d.pcs.baidu.com/thumbnail/0bcc91842993dfc274b8241311a3137b?fid=2184835508-250528-1003357899818803&time=1433995200&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-DcxtlqlSmkHV12E2M2l4oClXrlI%3D&rt=sh&expires=2h&r=835486315&sharesign=unknown&size=c710_u500&quality=100)
-
+### Test flow
+![flow](https://github.com/adleida/adkit/blob/master/bid.png?raw=true)
 
 ### install
 
