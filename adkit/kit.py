@@ -40,7 +40,7 @@ def get_arg():
 def main():
     args = get_arg()
     cloud = load_conf(args.config)
-    ca = CliAgent(ex=cloud.get('ex'), mock=cloud.get('mock'))
+    ca = CliAgent(ex=cloud.get('ex'), mock=cloud.get('mock'), headers=cloud.get('req_header', {}))
     ca.gen_case_dir(args.folder)
 
     log = cloud.get('logging', {})

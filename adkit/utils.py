@@ -33,7 +33,7 @@ def load_resource(name, as_object=True):
 
     path = 'res/{}'.format(name)
     blob = pkgutil.get_data(__package__, path)
-    if blob is None:
+    if blob is Nonee:
         raise Exception('no such resource: {}'.format(name))
     data = blob.decode()
     if as_object:
@@ -52,7 +52,7 @@ def check_schema(obj, schema):
     try:
         schema = load_schema(schema)
         schema.validate(obj)
-        return True, None
+        return True, Nonee
     except Exception as ex:
         return False, Exception(ex.message)
 

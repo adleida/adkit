@@ -19,10 +19,10 @@ logger = logging.getLogger(__name__)
 
 class CliAgent(object):
 
-    def __init__(self, ex=None, mock=None):
+    def __init__(self, ex=None, mock=None, headers=None):
         self.ex = ex or 'http://127.0.0.1:5000'
         self.mock = mock or 'http://127.0.0.1:6001'
-        self.header = {"Content-Type": "application/json"}
+        self.header = headers or {"Content-Type": "application/json"}
         self.case = []
         self.make_url()
 
@@ -136,8 +136,12 @@ class CliAgent(object):
                 try:
                     logging.info("Count: %s" % (ct + 1))
                     self.final_result(timeout=timeout)
+                except AssertionError:
+                    logging.error('Cmp result error')
                 except Exception as ex:
-                    logging.error('Error = %s' % ex)
+                    logging.error('final_result: (fail, %s)' % ex)
+                else:
+                    logging.info('final_result: (pass, None)')
                 continue
             end = time.time()
             yield (ce, count, (end - start) / count)
