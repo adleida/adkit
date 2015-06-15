@@ -18,14 +18,6 @@ logging:
       filename: adkit-2.log
       maxBytes: 1000000
       backupCount: 3
-    # mail:
-    #   class: logging.handlers.SMTPHandler
-    #   formatter: default
-    #   level: ERROR
-    #   mailhost: smtp.mxhichina.com:456
-    #   fromaddr: yongtao.fan@adleida.com
-    #   toaddrs: yongtao.fan@adleida.com
-    #   subject: The error log
   loggers:
     requests:
       level: ERROR

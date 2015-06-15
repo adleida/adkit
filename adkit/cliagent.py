@@ -43,9 +43,11 @@ class CliAgent(object):
             logging.error("send_conf: (fail, %s)" % ex)
             raise ConfException("send_conf error, reason: %s" % ex)
 
-    def reload_conf(self):
+    def reload_conf(self, json=None):
+        if json is None:
+            json = {}
         try:
-            tt = requests.post(self.ex_reload)
+            tt = requests.post(self.ex_reload, json=json)
             logging.info("reload_conf: (pass, None)")
             return tt
         except Exception as ex:
@@ -54,9 +56,12 @@ class CliAgent(object):
 
     def setup(self, json):
         try:
+            dsps = {
+                "dsps": json["dsp"]["s"]
+            }
             sc = self.send_conf(json=json).json()
-            rc = self.reload_conf().json()
-            if sc['conf'] and rc['reload']:
+            rc = self.reload_conf(json=dsps)
+            if sc['conf']:
                 logging.info("setup: (pass, None)")
                 return sc['uuid']
         except Exception as ex:
