@@ -37,19 +37,19 @@ class CliAgent(object):
     def send_conf(self, json):
         try:
             tt = requests.post(self.mock_conf, json=json)
-            logging.info("send_conf:(pass, None)")
+            logging.info("send_conf: (pass, None)")
             return tt
         except Exception as ex:
-            logging.error("send_conf:(fail, %s)" % ex)
+            logging.error("send_conf: (fail, %s)" % ex)
             raise ConfException("send_conf error, reason: %s" % ex)
 
     def reload_conf(self):
         try:
             tt = requests.post(self.ex_reload)
-            logging.info("reload_conf:(pass, None)")
+            logging.info("reload_conf: (pass, None)")
             return tt
         except Exception as ex:
-            logging.error("reload_conf:(fail, %s)" % ex)
+            logging.error("reload_conf: (fail, %s)" % ex)
             raise ReloadException("Reload error, reason: %s" % ex)
 
     def setup(self, json):
@@ -57,7 +57,7 @@ class CliAgent(object):
             sc = self.send_conf(json=json).json()
             rc = self.reload_conf().json()
             if sc['conf'] and rc['reload']:
-                logging.info("setup:(pass,None)")
+                logging.info("setup: (pass, None)")
                 return sc['uuid']
         except Exception as ex:
             logging.error("setup:(fail, %s)" % ex)
@@ -68,10 +68,10 @@ class CliAgent(object):
             with open(fname) as f:
                 req_data = f.read().encode()
                 tt = requests.post(self.ex_bid, data=req_data, timeout=timeout, headers=self.header)
-                logging.info("send_bid:(pass, %s)" % tt.json())
+                logging.info("send_bid: (pass, %s)" % tt.json())
                 return tt
         except Exception as ex:
-            logging.error("send_bid:(fail, %s)" % ex)
+            logging.error("send_bid: (fail, %s)" % ex)
             raise SendbidExcecption("Send_bid error, reason: %s" % ex)
 
     def final_result(self, result='result.json', timeout=1):
@@ -99,9 +99,9 @@ class CliAgent(object):
             start = time.time()
             try:
                 result = self.send_bid(timeout=timeout).json()
-                logging.info("bid_response:(pass, %s)" % result)
+                logging.info("bid_response: (pass, %s)" % result)
             except SendbidExcecption as ex:
-                logging.error("bid_response:(fail, %s)" % ex)
+                logging.error("bid_response: (fail, %s)" % ex)
             end = time.time()
             logging.info('case_name = %s, escape_time = %s' % (ce, (end - start)))
 
