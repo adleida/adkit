@@ -42,6 +42,7 @@ with open('adkit/__init__.py', 'rb') as f:
                 'PyYAML==3.11',
                 'requests',
                 'termcolor==1.1.0',
-                'tabulate'
+                'tabulate',
+                'dictdiffer'
             ],
         )
