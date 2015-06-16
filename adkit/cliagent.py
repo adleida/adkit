@@ -5,6 +5,7 @@
 # mail: jacketfan826@gmail.com
 # Created Time: 2015年05月13日 星期三 00时26分59秒
 #########################################################################
+from dictdiffer import diff
 import json
 import os
 import time
@@ -85,11 +86,14 @@ class CliAgent(object):
         try:
             bid_result = self.send_bid(timeout=timeout)
             result = load_conf(result)
-            assert compare_dictionaries(bid_result.json(), result)
+            re = diff(bid_result.json(), result)
+            re = list(re)
+            if re:
+                raise Exception(str(re))
         except SendbidExcecption as ex:
             raise SendbidExcecption("Send_bid error, reason: %s" % ex)
-        except AssertionError:
-            raise AssertionError
+        except Exception as eex:
+            raise eex
 
     def gen_case_dir(self, folder):
         target = 'config.yaml'
@@ -127,8 +131,8 @@ class CliAgent(object):
                     logging.error("final_result: (fail, %s)" % setex)
                 except SendbidExcecption as sendex:
                     logging.error("final_result: (fail, %s)" % sendex)
-                except AssertionError:
-                    logging.error("final_result: (fail, cmp result fail)")
+                except Exception as cex:
+                    logging.error("final_result: (fail, %s)" % cex)
                 end = time.time()
                 logging.info("case_escaped_time:%s" % (end - start))
                 continue
@@ -143,8 +147,6 @@ class CliAgent(object):
                 try:
                     logging.info("Count: %s" % (ct + 1))
                     self.final_result(timeout=timeout)
-                except AssertionError:
-                    logging.error('final_result: (fail, cmp result error)')
                 except Exception as ex:
                     logging.error('final_result: (fail, %s)' % ex)
                 else:
