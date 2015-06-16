@@ -5,6 +5,7 @@
 # mail: jacketfan826@gmail.com
 # Created Time: 2015年05月13日 星期三 00时26分59秒
 #########################################################################
+import json
 import os
 import time
 import os.path as _path
@@ -73,7 +74,8 @@ class CliAgent(object):
             with open(fname) as f:
                 req_data = f.read().encode()
                 tt = requests.post(self.ex_bid, data=req_data, timeout=timeout, headers=self.header)
-                logging.info("send_bid: (pass, %s)" % tt.json())
+                logging.info("send_bid: (pass, %s)" % json.dumps(tt.json(),
+                                                                 indent=2))
                 return tt
         except Exception as ex:
             logging.error("send_bid: (fail, %s)" % ex)
@@ -142,7 +144,7 @@ class CliAgent(object):
                     logging.info("Count: %s" % (ct + 1))
                     self.final_result(timeout=timeout)
                 except AssertionError:
-                    logging.error('Cmp result error')
+                    logging.error('final_result: (fail, cmp result error)')
                 except Exception as ex:
                     logging.error('final_result: (fail, %s)' % ex)
                 else:
