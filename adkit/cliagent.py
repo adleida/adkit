@@ -6,7 +6,6 @@
 # Created Time: 2015年05月13日 星期三 00时26分59秒
 #########################################################################
 from dictdiffer import diff
-import json
 import os
 import time
 import os.path as _path
@@ -75,8 +74,7 @@ class CliAgent(object):
             with open(fname) as f:
                 req_data = f.read().encode()
                 tt = requests.post(self.ex_bid, data=req_data, timeout=timeout, headers=self.header)
-                logging.info("send_bid: (pass, %s)" % json.dumps(tt.json(),
-                                                                 indent=2))
+                logging.info("send_bid: (pass, %s)" % tt.json())
                 return tt
         except Exception as ex:
             logging.error("send_bid: (fail, %s)" % ex)
