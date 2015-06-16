@@ -87,7 +87,9 @@ class CliAgent(object):
             re = diff(bid_result.json(), result)
             re = list(re)
             if re:
-                raise Exception(str(re))
+                for item in re:
+                    if "change" in item:
+                        raise Exception(str(item))
         except SendbidExcecption as ex:
             raise SendbidExcecption("Send_bid error, reason: %s" % ex)
         except Exception as eex:
