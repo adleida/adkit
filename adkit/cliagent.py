@@ -76,6 +76,8 @@ class CliAgent(object):
                 tt = requests.post(self.ex_bid, data=req_data, timeout=timeout, headers=self.header)
                 logging.info("send_bid: (pass, %s)" % tt.json())
                 return tt
+        except ValueError as vex:
+            logging.error("send_bid: (pass, But response format error: %s)" % vex)
         except Exception as ex:
             logging.error("send_bid: (fail, %s)" % ex)
             raise SendbidExcecption("Send_bid error, reason: %s" % ex)
