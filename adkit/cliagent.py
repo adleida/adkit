@@ -115,6 +115,8 @@ class CliAgent(object):
                 logging.info("bid_response: (pass, %s)" % result)
             except SendbidExcecption as ex:
                 logging.error("bid_response: (fail, %s)" % ex)
+            except Exception as aex:
+                logging.error("bid_response: (fail, %s)" % aex)
             end = time.time()
             logging.info('case_name = %s, escape_time = %s' % (ce, (end - start)))
 
