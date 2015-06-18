@@ -25,6 +25,7 @@ class CliAgent(object):
         self.mock = mock or 'http://127.0.0.1:6001'
         self.header = headers or {"Content-Type": "application/json"}
         self.case = []
+        self.ignore = []
         self.make_url()
 
     def make_header(self, **kwargs):
@@ -98,11 +99,14 @@ class CliAgent(object):
             raise eex
 
     def gen_case_dir(self, folder):
+        ignore = 'ignore'
         target = 'config.yaml'
         os.chdir(folder)
+        if ignore in os.listdir(os.curdir):
+            self.ignore.append(os.getcwd())
+        elif target in os.listdir(os.curdir):
+            self.case.append(os.getcwd())
         for obj in os.listdir(os.curdir):
-            if obj == target:
-                self.case.append(os.getcwd())
             if os.path.isdir(obj):
                 self.gen_case_dir(obj)
                 os.chdir(os.pardir)

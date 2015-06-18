@@ -91,8 +91,8 @@ def main():
     for x, y, z in result:
         logging.info("{},{},{}".format(x, y, z))
     print(tabulate(result, headers=['case', 'count', 'avg_time']))
+    print(tabulate([ca.ignore], headers=['ignore case']))
 
 
 if __name__ == '__main__':
-
     main()
