@@ -17,6 +17,7 @@ import requests
 import yaml
 import logging
 import time
+import codecs
 
 
 @functools.lru_cache()
@@ -86,9 +87,9 @@ def load_conf(fname):
     if os.path.exists(fname):
         _, ext = os.path.splitext(fname)
         if ext in ['.json']:
-            return json.load(open(fname))
+            return json.load(codecs.open(fname, encoding='utf8'))
         elif ext in ['.yaml', '.yml']:
-            return yaml.load(open(fname))
+            return yaml.load(codecs.open(fname, encoding='utf8'))
         else:
             raise Exception('cannot detect resource type')
     else:

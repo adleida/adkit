@@ -2,3 +2,4 @@ adkit/*.pyc
 adkit/__pycache__/
 dist/
 *.log
+/testdata/
