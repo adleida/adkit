@@ -11,6 +11,7 @@ import time
 import os.path as _path
 import requests
 import logging
+import codecs
 from .utils import load_conf, compare_dictionaries, update_request
 from .exception import SetupException, ReloadException, ConfException,\
     SendbidExcecption

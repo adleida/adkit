@@ -106,20 +106,20 @@ def update_request(cfg):
                 dp['notice_file'] = load_conf(nf)
             except Exception:
                 logging.warn('notice_file format error')
-                with open(nf) as f:
+                with codecs.open(nf, encoding='utf8') as f:
                     dp['notice_file'] = f.read()
         if isinstance(rf, str) and os.path.exists(rf):
             try:
                 dp['res_file'] = load_conf(rf)
             except Exception:
                 logging.warn('res_file format error')
-                with open(rf) as f:
+                with codecs.open(rf, encoding='utf8') as f:
                     dp['res_file'] = f.read()
     return cfg
 
 
 def load_file(fname):
-    with open(fname) as f:
+    with codecs.open(fname, encoding='utf8') as f:
         return json.loads(f.read())
 
 
