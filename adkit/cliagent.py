@@ -73,8 +73,8 @@ class CliAgent(object):
 
     def send_bid(self, fname='request.json', timeout=1):
         try:
-            with codecs.open(fname, 'utf8') as f:
-                req_data = f.read()
+            with codecs.open(fname, encoding='utf8') as f:
+                req_data = f.read().encode()
                 tt = requests.post(self.ex_bid, data=req_data, timeout=timeout, headers=self.header)
                 logging.info("send_bid: (pass, %s)" % tt.json())
                 return tt
