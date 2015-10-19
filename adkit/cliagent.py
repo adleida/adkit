@@ -50,6 +50,7 @@ class CliAgent(object):
         if json is None:
             json = {}
         try:
+            logging.info("exchange addr: %s", self.ex_reload)
             tt = requests.post(self.ex_reload, json=json)
             logging.info("reload_conf: (pass, None)")
             return tt
