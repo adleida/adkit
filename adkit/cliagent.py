@@ -75,6 +75,7 @@ class CliAgent(object):
         try:
             with codecs.open(fname, encoding='utf8') as f:
                 req_data = f.read().encode()
+                console.log(req_data);
                 tt = requests.post(self.ex_bid, data=req_data, timeout=timeout, headers=self.header)
                 logging.info("send_bid: (pass, %s)" % tt.json())
                 return tt
